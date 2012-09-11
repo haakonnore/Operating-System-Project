@@ -23,58 +23,50 @@ int main()
     lines[3] = numLines(job4); // fungerer men hacket inn filbane
     int job[4];
     job[3] = startJob(job4); // fungerer men hacket inn filbane
-    lines[3] = 1;
-    lines[2] = 1;
-    lines[1] = 1;
-    lines[0] = 1;
-    job[0]= 1;
-    job[1]= 1;
-    job[2]= 1;
-    job[3]= 1;
+    lines[3] = 13;
+    lines[2] = 2;
+    lines[1] = 24;
+    lines[0] = 40;
+    job[0]= 13;
+    job[1]= 22;
+    job[2]= 29;
+    job[3]= 18;
 
-    algFcfs(lines, job);
+    algFcfs2(lines, job);
 
 }
 
-int algFcfs(int * lines, int * job){
-    //letters is starttime, numbers is lines in the job
-    // må endre mye, pekere som endreer verdi, ikke som i "vanlige" språk
-    int roundnr = 0; // what cylce is beein controled at that iteration ( may go trough same cycle several times)
-    int bussyUntil = 0; // if bussyUntil > roundnr, the cpu is busy, and new jobs must wait
-    int counter = 0; //number of prossesed jobs
-    int i;//indexing job 1 to 4
-    int queue = 0;
-
-    int a = 5000;
-    while(counter < 4&& a >0){
-        a--;
-        printf("Control of fields, Roundnr = %i, bussyUntil = %i, counter = %i\n", roundnr, bussyUntil, counter);
 
 
-        for(i = 0; i <4; i++){
-            if(job[i]==roundnr && roundnr<bussyUntil){
-                job[i]= bussyUntil+ queue;
-                queue++;
+int algFcfs2(int * lines, int * job){
+    int i;
+    int min;
+    int minI;
+    int counter = 0;
+
+    int nextStart = 0;
+    while(counter < 4){
+        min = 2147483647;
+        for(i = 0; i<4; i++){
+            if(job[i]< min && job[i]!=-1){
+                min = job[i];
+                minI = i;
             }
-            else if(job[i]==roundnr){
-                bussyUntil = lines[i] + roundnr+ 1;
-                printf("Job%i starting at: %i, and finnish at: %i \n", i+1, roundnr, roundnr + lines[i]);
-                job[i]--;
-                roundnr--;
-                counter++;
-                if(queue>0)
-                    queue--;
-                break;
-            }
-
         }
-
-
-        roundnr++;
+        int start = min;
+        if (start<nextStart){
+            start = nextStart;
+        }
+        nextStart= start + lines[minI] + 1;
+        printf("Job%i starts at %i and ends at %i\n", minI + 1, start, nextStart-1 );
+        job[minI] = -1;
+        counter++;
     }
 
-
 }
+
+
+
 
 
 
