@@ -23,19 +23,88 @@ int main()
     lines[3] = numLines(job4); // fungerer men hacket inn filbane
     int job[4];
     job[3] = startJob(job4); // fungerer men hacket inn filbane
-    lines[3] = 13;
-    lines[2] = 2;
-    lines[1] = 24;
-    lines[0] = 40;
-    job[0]= 13;
-    job[1]= 22;
-    job[2]= 29;
-    job[3]= 18;
+    lines[3] = 4;
+    lines[2] = 4;
+    lines[1] = 4;
+    lines[0] = 4;
+    job[0]= 3;
+    job[1]= 3;
+    job[2]= 3;
+    job[3]= 3;
 
-    algFcfs2(lines, job);
+//    algFcfs2(lines, job);
+    int quantum = 2;
+
+    algRR(lines, job, quantum);
 
 }
 
+int algRR(int * lines, int * job, int quantum){
+    int i;
+    int min = job[0];
+    int minI = 0;
+    char one[200]   = "job1";
+    char two[200]   = "job2";
+    char tree [200] = "job3";
+    char four[200]  = "job4";
+    int counter = 0;
+    int  roulette[4];
+    int numInRoulette = 0;
+
+    while (lines[0]>0|| lines[1]>0|| lines[2]>0||0< lines[3]){
+
+        numInRoulette = 0;
+        for(i = 0; i<4; i++){
+            if(lines[i]>0 && job[i]<counter){
+                roulette[numInRoulette++] = i;
+
+            }
+        }
+
+//    printf("Min båt er lastet med %i kameler!\n", quantum);
+
+  //              printf("Din båt er lastet med %i kameler!\n", quantum);
+
+
+        if( numInRoulette > 0){
+            srand( time(NULL));
+            int ran = rand() % numInRoulette;
+            int winner = roulette[ran];
+            printf("A roulette with %i partisipant had the winner is: %i\n", numInRoulette, winner);
+            lines[winner] -= quantum;
+            char buffer[20] = "";
+            char count[50] = "";
+
+            sprintf(buffer, "%d", counter);
+
+            strcat(count, buffer);
+
+            if(winner == 0){
+                strcat(one, " ");
+                strcat(one, count);
+            }
+            if(winner == 1){
+                strcat(two, " ");
+                strcat(two, count);
+            }
+            if(winner == 2){
+                strcat(tree, " ");
+                strcat(tree, count);
+            }
+            if(winner == 3){
+                strcat(four, " ");
+                strcat(four, count);
+            }
+        }
+
+
+        counter+= quantum;
+    }
+    printf("%s\n", one);
+    printf("%s\n", two);
+    printf("%s\n", tree);
+    printf("%s\n", four);
+}
 
 
 int algFcfs2(int * lines, int * job){
