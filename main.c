@@ -3,9 +3,16 @@
 #include <string.h>
 
 
-int main()
+int main(int argc, char ** argv)
 {
-    const char * strn = "/home/haakon/Input/test1.txt"; // hvordan lese input? Hvordan finne ut hvor filen kjøres fra (bane)
+
+    srand( time(NULL));// Random seed for RR
+    char * fileToRun;
+    if(argc>4 || argc < 3)
+        exit 1;
+    if(argc == 4 && strcmp("RR",argv[1]))
+
+    const char * strn = "./";
     FILE * fp = fopen(strn, "r");
 
     char * job1 = NULL;
@@ -23,20 +30,21 @@ int main()
     lines[3] = numLines(job4); // fungerer men hacket inn filbane
     int job[4];
     job[3] = startJob(job4); // fungerer men hacket inn filbane
-    lines[3] = 4;
-    lines[2] = 4;
-    lines[1] = 4;
-    lines[0] = 4;
-    job[0]= 3;
-    job[1]= 3;
-    job[2]= 3;
-    job[3]= 3;
+    lines[3] = 19;
+    lines[2] = 13;
+    lines[1] = 11;
+    lines[0] = 28;
+    job[0]= 1;
+    job[1]= 1;
+    job[2]= 1;
+    job[3]= 1;
 
-//    algFcfs2(lines, job);
-    int quantum = 2;
-
-    algRR(lines, job, quantum);
-
+    if( strcmp(argv[1] ,"RR")==0&& argc == 4){
+        char quantum  = atoi(argv[2]);
+        algRR(lines, job, (int)quantum);
+    }
+    if( strcmp(argv[1] ,"FCFS")==0 && argc== 3)
+        algFcfs(lines, job);
 }
 
 int algRR(int * lines, int * job, int quantum){
@@ -67,10 +75,9 @@ int algRR(int * lines, int * job, int quantum){
 
 
         if( numInRoulette > 0){
-            srand( time(NULL));
-            int ran = rand() % numInRoulette;
+
+            int ran = rand() % numInRoulette; // bad random function
             int winner = roulette[ran];
-            printf("A roulette with %i partisipant had the winner is: %i\n", numInRoulette, winner);
             lines[winner] -= quantum;
             char buffer[20] = "";
             char count[50] = "";
@@ -107,7 +114,7 @@ int algRR(int * lines, int * job, int quantum){
 }
 
 
-int algFcfs2(int * lines, int * job){
+int algFcfs(int * lines, int * job){
     int i;
     int min;
     int minI;
